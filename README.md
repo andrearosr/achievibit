@@ -56,7 +56,7 @@ By participating in this project you agree to abide by its terms.
 
 ## Help us fund this
 Having an online service isn't cheap. it requires a domain, a server, and a data base.
-If you're willing and able, please consider donating [![donate](https://img.shields.io/badge/donate-PayPal-0070ba.svg)](paypal.me/thatkookooguy/)
+If you're willing and able, please consider donating [![donate](https://img.shields.io/badge/donate-PayPal-0070ba.svg)](https://paypal.me/thatkookooguy/)
 
 ## License
 
