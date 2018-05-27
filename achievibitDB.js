@@ -45,7 +45,14 @@ achievibitDB.getAndUpdateUserData = getAndUpdateUserData;
 module.exports = achievibitDB;
 
 function initCollections() {
-  collections.repos.index({ fullname: 1 }, { unique: true, sparse: true });
+  collections.repos.index({ fullname: 1 }, {
+    unique: true,
+    sparse: true,
+    collation: {
+      locale: 'en',
+      strength: 2
+    }
+  });
   collections.repos.index({
     'fullname': 'text',
     'organization': 'text'
@@ -55,7 +62,15 @@ function initCollections() {
       'organization': 1
     }
   });
-  collections.users.index({ username: 1 }, { unique: true, sparse: true });
+  // collation enables case insensitivity
+  collections.users.index({ username: 1 }, {
+    unique: true,
+    sparse: true,
+    collation: {
+      locale: 'en',
+      strength: 2
+    }
+  });
   collections.users.index({
     'username': 'text',
     'repos': 'text',
@@ -136,28 +151,27 @@ function updatePartialArray(collection, identityObject, updatePartial) {
 
 function findItem(collection, identityObject) {
   if (_.isNil(collection) || _.isNil(identityObject)) {return;}
-  return collections[collection].find(identityObject)
+  return collections[collection]
+    .find(identityObject, { collation: { locale: 'en', strength: 2 } })
     .then(passParam, function(error) {
       console.error([
         colors.yellow.bgMagenta('achievibitDB.findItem'),
         ' got an error'
       ].join(''), error);
-    }
-  );
+    });
 }
 
 function addPRItems(pullRequest, givenCallback) {
   async.parallel([
     function insertOrganization(callback) {
       if (pullRequest.organization) {
-        insertItem('users', pullRequest.organization).then(
-            function() {
-              callback(null, 'organization added');
-            }, function(error) {
-          console.error(error);
-          callback(null, 'organization existed?');
-        }
-          );
+        insertItem('users', pullRequest.organization)
+          .then(function() {
+            callback(null, 'organization added');
+          }, function(error) {
+            console.error(error);
+            callback(null, 'organization existed?');
+          });
       } else {
         callback(null, 'no organization to add');
       }
@@ -644,7 +658,7 @@ function deleteAchievibitWebhook(repoName, gToken, uid) {
           'Authorization': 'token ' + gToken
         },
         json: true
-      }, function(err, response, body) {
+      }, function(err/*, response, body*/) {
         if (err) {
           console.error('had a problem deleting a webhook for ' + repoName,
             err);
@@ -703,8 +717,9 @@ function getAndUpdateUserData(uid, updateWith) {
       var ghme = client.me();
 
       ghme.repos(function(err, repos) { // headers
-        if (err) resolve.reject('couldn\'t fetch repos');
-        else {
+        if (err) {
+          resolve.reject('couldn\'t fetch repos');
+        } else {
           var parsedRepos = [];
           _.forEach(repos, function(repo) {
             //var escapedRepoName = _.replace(repo.full_name, /\./g, '@@@');
