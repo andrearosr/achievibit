@@ -34,6 +34,7 @@
     "@types/node": "^9.3.0",
     "@types/supertest": "^2.0.4",
     "jest": "^21.2.1",
+    "jest-html-reporter": "^2.4.2",
     "nodemon": "^1.14.1",
     "prettier": "^1.11.1",
     "supertest": "^3.0.0",
@@ -52,12 +53,30 @@
       "json",
       "ts"
     ],
-    "coverageReporters": ["html", "json", "lcov", "text"],
+    "coverageReporters": [
+      "html",
+      "json",
+      "lcov",
+      "text"
+    ],
     "rootDir": "src",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
-    "coverageDirectory": "../coverage"
+    "coverageDirectory": "../test-reports",
+    "reporters": [
+      "default",
+      [
+        "jest-html-reporter", {
+          "outputPath": "./test-reports/test-report.html",
+          "pageTitle": "Unit Tests Report",
+          "theme": "darkTheme",
+          "styleOverridePath": "src/frontend/public/styles/jest-html-reporter.css",
+          "includeFailureMsg": true,
+          "includeConsoleLog": true
+        }
+      ]
+    ]
   }
 }
