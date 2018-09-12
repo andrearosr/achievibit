@@ -52,6 +52,7 @@
       "json",
       "ts"
     ],
+    "coverageReporters": ["html", "json", "lcov", "text"],
     "rootDir": "src",
     "testRegex": ".spec.ts$",
     "transform": {
