@@ -2,7 +2,7 @@
 
 body header h1::before {
   content: " ";
-  background-image: url("./src/frontend/public/assets/images/long-white.svg");
+  background-image: url("../src/frontend/public/assets/images/long-white.svg");
   background-repeat: no-repeat;
   background-position: 50% 50%;
   font-family: 'Righteous', cursive;
