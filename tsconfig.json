@@ -12,7 +12,14 @@
     "sourceMap": true,
     "allowJs": true,
     "outDir": "./dist",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "paths": {
+      "@achievibit.database": ["shared/database"],
+      "@achievibit.config": ["shared/config"],
+      "@achievibit.events": ["shared/events"],
+      "@shared/*": ["shared/*"],
+      "@achievibit/*": ["app/*"]
+    }
   },
   "include": [
     "src/**/*"
